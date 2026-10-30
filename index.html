@@ -19,7 +19,7 @@
     --color-accent-ink:#ffffff;
     --color-focus:     #3b5bdb;
 
-    /* --- NEW: status colours for the contact form --- */
+    /* --- status colours for the contact form --- */
     --color-danger:    #c2255c;
     --color-success:   #0f7a52;
 
@@ -41,7 +41,7 @@
 
     --section-pad: clamp(3rem, 8vw, 5.5rem);
 
-    /* NEW: let native controls (select, textarea) match the theme */
+    /* let native controls (select, textarea) match the theme */
     color-scheme: light dark;
   }
 
@@ -56,7 +56,6 @@
       --color-accent-ink: #10131a;
       --color-focus:   #8aa2ff;
 
-      /* --- NEW: status colours for the contact form --- */
       --color-danger:  #ff8fab;
       --color-success: #63e6be;
 
@@ -111,6 +110,19 @@
   }
 
   img { max-width: 100%; display: block; }
+
+  /* Screen-reader-only helper (used by the form intro) */
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+  }
 
   /* ============================================================
      3. LAYOUT HELPERS
@@ -197,7 +209,6 @@
     color: var(--color-accent);
   }
 
-  /* NEW: disabled state for the contact form's submit button */
   .btn[disabled] {
     opacity: .62;
     cursor: not-allowed;
@@ -207,7 +218,7 @@
   }
 
   /* ============================================================
-     5. HEADER + NAVIGATION  (clear, labelled navigation)
+     5. HEADER + NAVIGATION
      ============================================================ */
   .site-header {
     position: sticky;
@@ -371,12 +382,11 @@
     font-size: var(--step--1);
   }
   .fact-list li:last-child { border-bottom: 0; padding-bottom: 0; }
-  .fact-list dt { color: var(--color-muted); }
   .fact-list .fact-key { color: var(--color-muted); font-weight: 600; }
   .fact-list .fact-val { color: var(--color-text); font-weight: 600; text-align: right; }
 
   /* ============================================================
-     8. PROJECTS  (responsive card grid)
+     8. PROJECTS
      ============================================================ */
   .project-grid {
     display: grid;
@@ -576,7 +586,7 @@
   }
 
   /* ============================================================
-     10b. CONTACT FORM  (new)
+     10b. CONTACT FORM
      ============================================================ */
   .contact-layout {
     display: grid;
@@ -605,7 +615,6 @@
 
   .contact-form { display: grid; gap: 1.15rem; }
 
-  /* auto-fit so name/email sit side by side only when there is room */
   .form__row {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
@@ -660,7 +669,6 @@
     resize: vertical;
   }
 
-  /* inline error message — hidden while empty */
   .field__error {
     margin: 0;
     font-size: .78rem;
@@ -678,6 +686,15 @@
     box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-danger) 22%, transparent);
   }
 
+  /* Honeypot field — visually hidden, never focusable */
+  .form-honeypot {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+  }
+
   .form__actions {
     display: flex;
     flex-wrap: wrap;
@@ -692,7 +709,6 @@
     color: var(--color-muted);
   }
 
-  /* live region: stays in the a11y tree, only styled when it has text */
   .form__status {
     margin: 0;
     border: 1px solid transparent;
@@ -830,7 +846,7 @@
   }
 
   /* ============================================================
-     13. RESPONSIVE BREAKPOINTS  (fixes mobile cut-off)
+     13. RESPONSIVE BREAKPOINTS
      ============================================================ */
   @media (max-width: 860px) {
     .about-grid { grid-template-columns: 1fr; }
@@ -865,7 +881,7 @@
   @media (max-width: 480px) {
     .hero__actions .btn { width: 100%; }
     .card__thumb { height: 78px; }
-    .form__actions .btn { width: 100%; }   /* NEW */
+    .form__actions .btn { width: 100%; }
   }
 
   /* ============================================================
@@ -1128,7 +1144,8 @@
         <div class="contact-layout">
 
           <!-- ---------- FORM ---------- -->
-          <form class="contact-form" id="contact-form" action="#" method="post" novalidate>
+          <form class="contact-form" id="contact-form"
+                action="https://formspree.io/f/myeyergz" method="post" novalidate>
 
             <div class="form__row">
 
@@ -1137,7 +1154,7 @@
                   Name <span class="field__req" aria-hidden="true">*</span>
                 </label>
                 <input class="field__control" type="text" id="cf-name" name="name"
-                       autocomplete="name" placeholder="sekang segotso"
+                       autocomplete="name" placeholder="Sekang Segotso"
                        aria-describedby="cf-name-error" required>
                 <p class="field__error" id="cf-name-error"></p>
               </div>
@@ -1178,6 +1195,10 @@
               <p class="field__error" id="cf-message-error"></p>
             </div>
 
+            <!-- Spam honeypot: hidden from people, filled by bots -->
+            <input class="form-honeypot" type="text" name="_gotcha"
+                   tabindex="-1" autocomplete="off" aria-hidden="true">
+
             <div class="form__actions">
               <button class="btn btn--primary" type="submit" id="contact-submit">
                 <span class="btn__label">Send message</span>
@@ -1208,7 +1229,7 @@
                 <span class="contact-link__icon" aria-hidden="true">in</span>
                 <span>
                   LinkedIn
-                  <span class="contact-link__meta">/in/jordan-ellis</span>
+                  <span class="contact-link__meta">/in/sekang-segotso</span>
                 </span>
               </a>
 
@@ -1216,7 +1237,7 @@
                 <span class="contact-link__icon" aria-hidden="true">&lt;/&gt;</span>
                 <span>
                   GitHub
-                  <span class="contact-link__meta">github.com/jordanellis</span>
+                  <span class="contact-link__meta">github.com/sekangsegotso</span>
                 </span>
               </a>
             </div>
@@ -1321,7 +1342,6 @@
       navToggle.setAttribute('aria-expanded', String(isOpen));
     });
 
-    /* Close the menu after choosing a section */
     nav.addEventListener('click', function (event) {
       if (event.target.closest('a')) {
         nav.classList.remove('is-open');
@@ -1381,7 +1401,6 @@
     modalSummary.textContent = data.summary;
     modalNote.textContent    = data.footnote || '';
 
-    /* Rebuild the bullet list safely with DOM methods */
     modalPoints.textContent = '';
     data.points.forEach(function (text) {
       var li = document.createElement('li');
@@ -1404,8 +1423,6 @@
     }
   }
 
-  /* Open when any part of a card is clicked (the "View details"
-     button simply bubbles up to the same handler). */
   if (grid) {
     grid.addEventListener('click', function (event) {
       var card = event.target.closest('.card');
@@ -1414,12 +1431,10 @@
     });
   }
 
-  /* Close: backdrop, close button */
   modal.addEventListener('click', function (event) {
     if (event.target.hasAttribute('data-close')) closeProject();
   });
 
-  /* Close: Escape key + simple focus trap */
   document.addEventListener('keydown', function (event) {
     if (modal.hidden) return;
 
@@ -1457,7 +1472,7 @@
       if (!panel) return;
 
       button.setAttribute('aria-expanded', String(!expanded));
-      panel.hidden = expanded;   /* collapse when open, reveal when closed */
+      panel.hidden = expanded;
     });
   });
 
@@ -1467,11 +1482,10 @@
   var form = document.getElementById('contact-form');
 
   if (form) {
-    var statusEl  = document.getElementById('form-status');
-    var submitBtn = document.getElementById('contact-submit');
+    var statusEl    = document.getElementById('form-status');
+    var submitBtn   = document.getElementById('contact-submit');
     var submitLabel = submitBtn ? submitBtn.querySelector('.btn__label') : null;
 
-    /* One validator per required field — returns "" when valid. */
     var RULES = {
       name: function (value) {
         var v = value.trim();
@@ -1535,8 +1549,6 @@
       statusEl.textContent = '';
     }
 
-    /* Live feedback: validate on blur, and re-validate on input
-       once a field has already been flagged. */
     FIELD_NAMES.forEach(function (name) {
       var input = form.elements[name];
       if (!input) return;
@@ -1568,30 +1580,7 @@
       }
 
       /* --------------------------------------------------------
-         DEMO SUBMISSION — no network request is made.
-         Replace the setTimeout below with a real request, e.g.:
-
-           fetch('https://formspree.io/f/XXXX', {
-             method: 'POST',
-             body: new FormData(form),
-             headers: { Accept: 'application/json' }
-           })
-             .then(function (res) {
-               if (!res.ok) throw new Error('Request failed');
-               return res.json();
-             })
-             .then(function () { onSuccess(); })
-             .catch(function () {
-               setStatus('err', 'Something went wrong. Please email me directly.');
-             })
-             .finally(function () {
-               submitBtn.disabled = false;
-               if (submitLabel) submitLabel.textContent = 'Send message';
-             });
-
-         Netlify, Formspree, and Basin all accept a plain HTML form
-         POST, so you can also just set action/method on the <form>
-         and drop the JavaScript handler entirely.
+         REAL SUBMISSION — POST to Formspree
          -------------------------------------------------------- */
       var firstName = form.elements.name.value.trim().split(/\s+/)[0] || 'there';
 
@@ -1599,18 +1588,60 @@
       if (submitLabel) submitLabel.textContent = 'Sending…';
       clearStatus();
 
-      window.setTimeout(function () {
-        submitBtn.disabled = false;
-        if (submitLabel) submitLabel.textContent = 'Send message';
+      fetch('https://formspree.io/f/myeyergz', {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { Accept: 'application/json' }
+      })
+        .then(function (response) {
+          return response.json().then(function (data) {
+            return { ok: response.ok, data: data };
+          });
+        })
+        .then(function (result) {
+          if (result.ok) {
+            form.reset();
+            FIELD_NAMES.forEach(function (name) {
+              var input = form.elements[name];
+              if (input) setError(input, '');
+            });
+            setStatus('ok',
+              'Thanks, ' + firstName +
+              ' — your message is on its way. I reply within one working day.');
+            return;
+          }
 
-        form.reset();
-        FIELD_NAMES.forEach(function (name) {
-          var input = form.elements[name];
-          if (input) setError(input, '');
+          var data = result.data || {};
+          var fieldErrors = Array.isArray(data.errors) ? data.errors : [];
+          var handled = false;
+
+          fieldErrors.forEach(function (err) {
+            if (err.field && form.elements[err.field]) {
+              setError(form.elements[err.field],
+                err.message || 'Please check this field.');
+              handled = true;
+            }
+          });
+
+          if (handled) {
+            setStatus('err', 'Please fix the highlighted fields and try again.');
+            var firstBad = form.querySelector('[aria-invalid="true"]');
+            if (firstBad) firstBad.focus();
+          } else {
+            setStatus('err',
+              data.error ||
+              data.message ||
+              'Something went wrong on the server. Please email me directly.');
+          }
+        })
+        .catch(function () {
+          setStatus('err',
+            'Network error — please check your connection, or email me directly.');
+        })
+        .then(function () {
+          submitBtn.disabled = false;
+          if (submitLabel) submitLabel.textContent = 'Send message';
         });
-
-        setStatus('ok', 'Thanks, ' + firstName + ' — your message is on its way. I reply within one working day.');
-      }, 900);
     });
   }
 
