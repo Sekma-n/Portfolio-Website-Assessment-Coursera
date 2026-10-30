@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Jordan Ellis — Front-End Developer</title>
-<meta name="description" content="Portfolio of Jordan Ellis, a front-end developer who builds responsive, accessible websites.">
+<title>Sekang Segotso — Front-End Developer</title>
+<meta name="description" content="Portfolio of Sekang Segotso, a front-end developer who builds responsive, accessible websites.">
 <style>
   /* ============================================================
      1. DESIGN TOKENS  (consistent typography + spacing)
@@ -18,6 +18,10 @@
     --color-accent:    #3b5bdb;
     --color-accent-ink:#ffffff;
     --color-focus:     #3b5bdb;
+
+    /* --- NEW: status colours for the contact form --- */
+    --color-danger:    #c2255c;
+    --color-success:   #0f7a52;
 
     --radius-sm: 10px;
     --radius:    16px;
@@ -36,6 +40,9 @@
     --step-3:  clamp(1.9rem, 1.5rem + 2.2vw, 3.15rem);
 
     --section-pad: clamp(3rem, 8vw, 5.5rem);
+
+    /* NEW: let native controls (select, textarea) match the theme */
+    color-scheme: light dark;
   }
 
   @media (prefers-color-scheme: dark) {
@@ -48,6 +55,11 @@
       --color-accent:  #8aa2ff;
       --color-accent-ink: #10131a;
       --color-focus:   #8aa2ff;
+
+      /* --- NEW: status colours for the contact form --- */
+      --color-danger:  #ff8fab;
+      --color-success: #63e6be;
+
       --shadow-sm: 0 1px 2px rgba(0,0,0,.5);
       --shadow-lg: 0 18px 40px -18px rgba(0,0,0,.8), 0 2px 6px -2px rgba(0,0,0,.5);
     }
@@ -183,6 +195,15 @@
   .btn--ghost:hover {
     border-color: var(--color-accent);
     color: var(--color-accent);
+  }
+
+  /* NEW: disabled state for the contact form's submit button */
+  .btn[disabled] {
+    opacity: .62;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+    filter: none;
   }
 
   /* ============================================================
@@ -555,6 +576,144 @@
   }
 
   /* ============================================================
+     10b. CONTACT FORM  (new)
+     ============================================================ */
+  .contact-layout {
+    display: grid;
+    gap: clamp(1.75rem, 4vw, 2.5rem);
+    margin-top: clamp(1.5rem, 4vw, 2rem);
+  }
+
+  .contact-aside__title {
+    margin: 0;
+    font-size: var(--step-0);
+    font-weight: 700;
+    color: var(--color-text);
+  }
+  .contact-aside .contact-grid { margin-top: .9rem; }
+
+  @media (min-width: 900px) {
+    .contact-layout {
+      grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr);
+      align-items: start;
+    }
+    .contact-aside {
+      padding-left: clamp(1.5rem, 3vw, 2rem);
+      border-left: 1px solid var(--color-border);
+    }
+  }
+
+  .contact-form { display: grid; gap: 1.15rem; }
+
+  /* auto-fit so name/email sit side by side only when there is room */
+  .form__row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 1.15rem;
+  }
+
+  .field {
+    display: grid;
+    gap: .4rem;
+    align-content: start;
+  }
+
+  .field__label {
+    font-size: var(--step--1);
+    font-weight: 700;
+    color: var(--color-text);
+  }
+  .field__req { color: var(--color-danger); }
+
+  .field__hint {
+    margin: 0;
+    font-size: .78rem;
+    line-height: 1.5;
+    color: var(--color-muted);
+  }
+
+  .field__control {
+    width: 100%;
+    padding: .78rem .95rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    background: var(--color-bg);
+    color: var(--color-text);
+    font: inherit;
+    font-size: var(--step-0);
+    line-height: 1.5;
+    transition: border-color .18s ease, background-color .18s ease, box-shadow .18s ease;
+  }
+  .field__control::placeholder { color: var(--color-muted); opacity: .8; }
+  .field__control:hover {
+    border-color: color-mix(in srgb, var(--color-accent) 45%, var(--color-border));
+  }
+  .field__control:focus-visible {
+    outline: none;
+    border-color: var(--color-accent);
+    background: var(--color-surface);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent) 22%, transparent);
+  }
+
+  textarea.field__control {
+    min-height: 9rem;
+    resize: vertical;
+  }
+
+  /* inline error message — hidden while empty */
+  .field__error {
+    margin: 0;
+    font-size: .78rem;
+    font-weight: 600;
+    line-height: 1.5;
+    color: var(--color-danger);
+  }
+  .field__error:empty { display: none; }
+
+  .field--invalid .field__control {
+    border-color: var(--color-danger);
+    background: color-mix(in srgb, var(--color-danger) 7%, var(--color-bg));
+  }
+  .field--invalid .field__control:focus-visible {
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-danger) 22%, transparent);
+  }
+
+  .form__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: .75rem 1rem;
+    margin-top: .15rem;
+  }
+
+  .form__note {
+    margin: 0;
+    font-size: .78rem;
+    color: var(--color-muted);
+  }
+
+  /* live region: stays in the a11y tree, only styled when it has text */
+  .form__status {
+    margin: 0;
+    border: 1px solid transparent;
+    border-radius: var(--radius-sm);
+    font-size: var(--step--1);
+    font-weight: 600;
+    line-height: 1.5;
+  }
+  .form__status:not(:empty) { padding: .8rem 1rem; }
+  .form__status--ok {
+    color: var(--color-success);
+    background: color-mix(in srgb, var(--color-success) 12%, transparent);
+    border-color: color-mix(in srgb, var(--color-success) 42%, transparent);
+  }
+  .form__status--err {
+    color: var(--color-danger);
+    background: color-mix(in srgb, var(--color-danger) 12%, transparent);
+    border-color: color-mix(in srgb, var(--color-danger) 42%, transparent);
+  }
+
+  /* ============================================================
      11. FOOTER
      ============================================================ */
   .site-footer {
@@ -706,6 +865,7 @@
   @media (max-width: 480px) {
     .hero__actions .btn { width: 100%; }
     .card__thumb { height: 78px; }
+    .form__actions .btn { width: 100%; }   /* NEW */
   }
 
   /* ============================================================
@@ -728,7 +888,7 @@
 <!-- ==================== HEADER ==================== -->
 <header class="site-header">
   <div class="container header__inner">
-    <a class="logo" href="#top">Jordan Ellis<span class="logo__dot">.</span></a>
+    <a class="logo" href="#top">Sekang Segotso<span class="logo__dot">.</span></a>
 
     <button class="nav-toggle" type="button"
             aria-expanded="false" aria-controls="primary-nav">
@@ -953,40 +1113,115 @@
     </div>
   </section>
 
-  <!-- ==================== CONTACT ==================== -->
+  <!-- ==================== CONTACT (form + direct links) ==================== -->
   <section class="section" id="contact" aria-labelledby="contact-title">
     <div class="container">
       <div class="contact-card">
         <p class="section__eyebrow">Contact</p>
         <h2 id="contact-title">Let’s talk about your project</h2>
-        <p class="section__lead" style="margin-bottom:0">
-          I reply to every message within one working day. Email is best.
+        <p class="section__lead">
+          Fill in the form and I will reply within one working day.
+          Fields marked <span aria-hidden="true" style="color:var(--color-danger)">*</span>
+          <span class="visually-hidden">with an asterisk</span> are required.
         </p>
 
-        <div class="contact-grid">
-          <a class="contact-link" href="mailto:jordan.ellis@example.com">
-            <span class="contact-link__icon" aria-hidden="true">@</span>
-            <span>
-              Email
-              <span class="contact-link__meta">jordan.ellis@example.com</span>
-            </span>
-          </a>
+        <div class="contact-layout">
 
-          <a class="contact-link" href="https://www.linkedin.com/" target="_blank" rel="noopener noreferrer">
-            <span class="contact-link__icon" aria-hidden="true">in</span>
-            <span>
-              LinkedIn
-              <span class="contact-link__meta">/in/jordan-ellis</span>
-            </span>
-          </a>
+          <!-- ---------- FORM ---------- -->
+          <form class="contact-form" id="contact-form" action="#" method="post" novalidate>
 
-          <a class="contact-link" href="https://github.com/" target="_blank" rel="noopener noreferrer">
-            <span class="contact-link__icon" aria-hidden="true">&lt;/&gt;</span>
-            <span>
-              GitHub
-              <span class="contact-link__meta">github.com/jordanellis</span>
-            </span>
-          </a>
+            <div class="form__row">
+
+              <div class="field">
+                <label class="field__label" for="cf-name">
+                  Name <span class="field__req" aria-hidden="true">*</span>
+                </label>
+                <input class="field__control" type="text" id="cf-name" name="name"
+                       autocomplete="name" placeholder="sekang segotso"
+                       aria-describedby="cf-name-error" required>
+                <p class="field__error" id="cf-name-error"></p>
+              </div>
+
+              <div class="field">
+                <label class="field__label" for="cf-email">
+                  Email <span class="field__req" aria-hidden="true">*</span>
+                </label>
+                <input class="field__control" type="email" id="cf-email" name="email"
+                       autocomplete="email" inputmode="email" placeholder="you@example.com"
+                       aria-describedby="cf-email-error" required>
+                <p class="field__error" id="cf-email-error"></p>
+              </div>
+
+            </div>
+
+            <div class="field">
+              <label class="field__label" for="cf-subject">What do you need?</label>
+              <select class="field__control" id="cf-subject" name="subject"
+                      aria-describedby="cf-subject-hint">
+                <option value="">Choose an option (optional)</option>
+                <option value="role">A front-end role</option>
+                <option value="freelance">A freelance build</option>
+                <option value="refactor">A responsive refactor</option>
+                <option value="other">Something else</option>
+              </select>
+              <p class="field__hint" id="cf-subject-hint">Helps me route your message to the right place.</p>
+            </div>
+
+            <div class="field">
+              <label class="field__label" for="cf-message">
+                Message <span class="field__req" aria-hidden="true">*</span>
+              </label>
+              <textarea class="field__control" id="cf-message" name="message" rows="6"
+                        placeholder="Tell me about the project, the timeline, and what success looks like."
+                        aria-describedby="cf-message-hint cf-message-error" required></textarea>
+              <p class="field__hint" id="cf-message-hint">A few sentences is plenty — minimum 10 characters.</p>
+              <p class="field__error" id="cf-message-error"></p>
+            </div>
+
+            <div class="form__actions">
+              <button class="btn btn--primary" type="submit" id="contact-submit">
+                <span class="btn__label">Send message</span>
+                <span aria-hidden="true">→</span>
+              </button>
+              <p class="form__note">Your details stay between us — no lists, no spam.</p>
+            </div>
+
+            <!-- live region: always in the DOM so updates are announced -->
+            <p class="form__status" id="form-status" role="status" aria-live="polite"></p>
+
+          </form>
+
+          <!-- ---------- DIRECT LINKS ---------- -->
+          <aside class="contact-aside" aria-labelledby="contact-aside-title">
+            <h3 class="contact-aside__title" id="contact-aside-title">Or reach me directly</h3>
+
+            <div class="contact-grid">
+              <a class="contact-link" href="mailto:sekang.segotso@moov.life">
+                <span class="contact-link__icon" aria-hidden="true">@</span>
+                <span>
+                  Email
+                  <span class="contact-link__meta">sekang.segotso@moov.life</span>
+                </span>
+              </a>
+
+              <a class="contact-link" href="https://www.linkedin.com/" target="_blank" rel="noopener noreferrer">
+                <span class="contact-link__icon" aria-hidden="true">in</span>
+                <span>
+                  LinkedIn
+                  <span class="contact-link__meta">/in/jordan-ellis</span>
+                </span>
+              </a>
+
+              <a class="contact-link" href="https://github.com/" target="_blank" rel="noopener noreferrer">
+                <span class="contact-link__icon" aria-hidden="true">&lt;/&gt;</span>
+                <span>
+                  GitHub
+                  <span class="contact-link__meta">github.com/jordanellis</span>
+                </span>
+              </a>
+            </div>
+          </aside>
+
         </div>
       </div>
     </div>
@@ -997,7 +1232,7 @@
 <!-- ==================== FOOTER ==================== -->
 <footer class="site-footer">
   <div class="container footer__inner">
-    <p style="margin:0">© <span id="year">2025</span> Jordan Ellis</p>
+    <p style="margin:0">© <span id="year">2025</span> Sekang Segotso</p>
     <p style="margin:0">Built with HTML, CSS and JavaScript.</p>
   </div>
 </footer>
@@ -1227,7 +1462,160 @@
   });
 
   /* ==========================================================
-     5. FOOTER YEAR
+     5. CONTACT FORM — validation, focus handling, feedback
+     ========================================================== */
+  var form = document.getElementById('contact-form');
+
+  if (form) {
+    var statusEl  = document.getElementById('form-status');
+    var submitBtn = document.getElementById('contact-submit');
+    var submitLabel = submitBtn ? submitBtn.querySelector('.btn__label') : null;
+
+    /* One validator per required field — returns "" when valid. */
+    var RULES = {
+      name: function (value) {
+        var v = value.trim();
+        if (!v) return 'Please enter your name.';
+        if (v.length < 2) return 'That looks too short — at least 2 characters, please.';
+        return '';
+      },
+      email: function (value) {
+        var v = value.trim();
+        if (!v) return 'Please enter your email so I can reply.';
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)) {
+          return 'That email address does not look right — try you@example.com.';
+        }
+        return '';
+      },
+      message: function (value) {
+        var v = value.trim();
+        if (!v) return 'Please add a message.';
+        if (v.length < 10) return 'A little more detail, please — at least 10 characters.';
+        return '';
+      }
+    };
+
+    var FIELD_NAMES = Object.keys(RULES);
+
+    function wrapperOf(input) { return input.closest('.field'); }
+
+    function setError(input, message) {
+      var wrapper = wrapperOf(input);
+      if (!wrapper) return;
+      var errorEl = wrapper.querySelector('.field__error');
+
+      if (message) {
+        wrapper.classList.add('field--invalid');
+        input.setAttribute('aria-invalid', 'true');
+        if (errorEl) errorEl.textContent = message;
+      } else {
+        wrapper.classList.remove('field--invalid');
+        input.removeAttribute('aria-invalid');
+        if (errorEl) errorEl.textContent = '';
+      }
+    }
+
+    function validate(input) {
+      var rule = RULES[input.name];
+      if (!rule) return true;
+      var message = rule(input.value);
+      setError(input, message);
+      return message === '';
+    }
+
+    function setStatus(type, message) {
+      if (!statusEl) return;
+      statusEl.className = 'form__status form__status--' + type;
+      statusEl.textContent = message;
+    }
+
+    function clearStatus() {
+      if (!statusEl) return;
+      statusEl.className = 'form__status';
+      statusEl.textContent = '';
+    }
+
+    /* Live feedback: validate on blur, and re-validate on input
+       once a field has already been flagged. */
+    FIELD_NAMES.forEach(function (name) {
+      var input = form.elements[name];
+      if (!input) return;
+
+      input.addEventListener('blur', function () { validate(input); });
+
+      input.addEventListener('input', function () {
+        var wrapper = wrapperOf(input);
+        if (wrapper && wrapper.classList.contains('field--invalid')) validate(input);
+        clearStatus();
+      });
+    });
+
+    form.addEventListener('submit', function (event) {
+      event.preventDefault();
+
+      var firstInvalid = null;
+
+      FIELD_NAMES.forEach(function (name) {
+        var input = form.elements[name];
+        if (!input) return;
+        if (!validate(input) && !firstInvalid) firstInvalid = input;
+      });
+
+      if (firstInvalid) {
+        setStatus('err', 'Please fix the highlighted fields and try again.');
+        firstInvalid.focus();
+        return;
+      }
+
+      /* --------------------------------------------------------
+         DEMO SUBMISSION — no network request is made.
+         Replace the setTimeout below with a real request, e.g.:
+
+           fetch('https://formspree.io/f/XXXX', {
+             method: 'POST',
+             body: new FormData(form),
+             headers: { Accept: 'application/json' }
+           })
+             .then(function (res) {
+               if (!res.ok) throw new Error('Request failed');
+               return res.json();
+             })
+             .then(function () { onSuccess(); })
+             .catch(function () {
+               setStatus('err', 'Something went wrong. Please email me directly.');
+             })
+             .finally(function () {
+               submitBtn.disabled = false;
+               if (submitLabel) submitLabel.textContent = 'Send message';
+             });
+
+         Netlify, Formspree, and Basin all accept a plain HTML form
+         POST, so you can also just set action/method on the <form>
+         and drop the JavaScript handler entirely.
+         -------------------------------------------------------- */
+      var firstName = form.elements.name.value.trim().split(/\s+/)[0] || 'there';
+
+      submitBtn.disabled = true;
+      if (submitLabel) submitLabel.textContent = 'Sending…';
+      clearStatus();
+
+      window.setTimeout(function () {
+        submitBtn.disabled = false;
+        if (submitLabel) submitLabel.textContent = 'Send message';
+
+        form.reset();
+        FIELD_NAMES.forEach(function (name) {
+          var input = form.elements[name];
+          if (input) setError(input, '');
+        });
+
+        setStatus('ok', 'Thanks, ' + firstName + ' — your message is on its way. I reply within one working day.');
+      }, 900);
+    });
+  }
+
+  /* ==========================================================
+     6. FOOTER YEAR
      ========================================================== */
   var yearEl = $('#year');
   if (yearEl) yearEl.textContent = new Date().getFullYear();
